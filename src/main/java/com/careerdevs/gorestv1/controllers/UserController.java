@@ -103,11 +103,10 @@ public class UserController {
 
             url += "?access-token=" + token;
 
-            var user = restTemplate.getForObject(url, UserModel.class);
-            assert user != null;
-            System.out.println("Repot: \n" + user.generateReport());
+            restTemplate.delete(url);//return void
 
-            return user;
+            return "Successfully Deleted user #" + userId;
+
 
         } catch (HttpClientErrorException.NotFound exception) {
             return "User could not be delete, user #" + userId + "does not exist";
@@ -178,13 +177,14 @@ public class UserController {
         try {
             ArrayList<UserModel> allusers = new ArrayList<>();
             String url = "https://gorest.co.in/public/v2/users";
-
+            //instance of user model array
             ResponseEntity<UserModel[]> response = restTemplate.getForEntity(url, UserModel[].class);
 
             allusers.addAll(Arrays.asList(response.getBody()));
 
             int totalPageNumber = 4;// Integer.parseInt(response.getHeaders().get("X-Pagination-pages").get(0))
 ;
+            //going through all the pages
             for(int i = 2;i <= totalPageNumber;i++){
                 String tempUrl = url + "?page=" + i;
                 UserModel[] pageData = restTemplate.getForObject(tempUrl,UserModel[].class);

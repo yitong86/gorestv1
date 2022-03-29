@@ -7,7 +7,6 @@ public class UserModel {
     //@JsonProperty("id")
     private int id;
 
-
     private String name;
     private String email;
     private String gender;
